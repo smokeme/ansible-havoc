@@ -1,0 +1,30 @@
+- name: Install Havoc Framework and Configure Team Server
+  hosts: kali
+  gather_facts: false
+  tasks:
+    - name: Wait for SSH to become available
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        delay: 30
+        timeout: 300
+        state: started
+
+    - name: Clone Havoc Framework repository
+      git:
+        repo: https://github.com/HavocFramework/Havoc.git
+        dest: /opt/Havoc 
+        force: yes
+
+    - name: Install dependencies for Team Server
+      command: "{{ item }}"
+      args:
+        chdir: /opt/Havoc/teamserver
+      loop:
+        - go mod download golang.org/x/sys
+        - go mod download github.com/ugorji/go
+
+    - name: Build Team Server
+      command: make ts-build
+      args:
+        chdir: /opt/Havoc

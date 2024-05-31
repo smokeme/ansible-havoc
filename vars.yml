@@ -1,0 +1,10 @@
+my_domain:  mydomain.com # Your domain name (During setup please point the domain A record to the IP address provided by script so it can successfully setup certbot)
+my_ip: 37.231.33.0 # Your IP address to setup firewall rules
+my_email: any@email.com # For certbot's sake
+linode_token: ""  # Replace with your actual Linode API token
+linode_label: havoc-kali
+linode_type: g6-standard-1  
+linode_region: eu-central  
+linode_image: linode/kali
+linode_root_pass: "ThisIs@H4rdP4ssw0rD!" # Root SSH password
+inventory_file: "havoc_hosts"  

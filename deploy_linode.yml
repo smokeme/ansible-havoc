@@ -1,0 +1,29 @@
+---
+- name: Create Linode Instance and Configure It
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+  - vars.yml
+    
+  tasks:
+    - name: Create Linode Instance
+      linode_v4:
+        access_token: "{{ linode_token }}"
+        label: "{{ linode_label }}"
+        type: "{{ linode_type }}"
+        region: "{{ linode_region }}"
+        image: "{{ linode_image }}"
+        root_pass: "{{ linode_root_pass }}"
+        state: present
+      register: linode
+
+    - name: Print the IP address of the new Linode instance
+      debug:
+        msg: "The IP address of the new Linode instance is {{ linode.instance.ipv4[0] }} Please point the domain name to this IP address"
+
+    - name: Save host information to inventory file
+      copy:
+        content: |
+          [kali]
+          {{ linode.instance.ipv4[0] }} ansible_user=root ansible_ssh_pass={{ linode_root_pass }}
+        dest: "{{ inventory_file }}"

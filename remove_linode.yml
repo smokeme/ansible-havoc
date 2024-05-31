@@ -1,0 +1,12 @@
+---
+- name: Remove Linode Instance
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+  - vars.yml
+  tasks:
+    - name: Delete the Linode.
+      community.general.linode_v4:
+        access_token: "{{ linode_token }}"
+        label: "{{ linode_label }}"
+        state: absent
